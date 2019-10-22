@@ -55,7 +55,7 @@ import OtherTalk from "./OtherTalk"
 import MyTalk from "./MyTalk"
 import PostSmg from "../../../PostInterface"
 import GetSmg from "../../../GetInterface"
-import { async } from 'q'
+
 
   export default {
     data() {

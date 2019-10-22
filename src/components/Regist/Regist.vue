@@ -104,13 +104,16 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            // alert('submit!');
              const fileArray = this.$refs.upload.uploadFiles;
+             if (fileArray.length==0){
+               alert("记得上传头像哦");
+             }
              if (fileArray.length>1){
                alert("只可上传一张头像");
                return false;
              }else{
-            console.log(fileArray);
+            // console.log(fileArray);
             var fd = new FormData();
             for(let i = 0; i < fileArray.length; i++) {
                 fd.append('avatar', fileArray[i].raw);            
@@ -123,14 +126,19 @@
         data:fd,
         params:data,
       }).then(result=>{
-        alert(result.data);
+        // alert(result.data);
+        console.log(result.data);
+        console.log(this.ruleForm);
         if (result.data.state=="success"){
+          alert("注册成功");
         this.$router.push("/Login");
+        }else{
+          alert("该用户名存在！");
         }
       })
              }       
           } else {
-            console.log('error submit!!');
+            // console.log('error submit!!');
             return false;
           }
         });

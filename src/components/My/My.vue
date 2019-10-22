@@ -74,6 +74,7 @@ export default {
             this.UserInfo.NickUserName=value.value;
           },
           LogOut:async function(){
+            this.$store.state.token="";
           await PostSmg.LogOut(this.$store.state.UserName);
           this.$store.dispatch("UserLogout");
           this.$router.push("/Login");

@@ -2,7 +2,7 @@
   <div id="UserPage_Container"> 
     <router-link to="/MainPage" ><el-button type="primary">回到首页</el-button></router-link>
        <div id="UserPage_Head">
-          <el-avatar shape="square" :size="100" fit="fit" :src="UserInfo.HeadImage"></el-avatar>
+          <el-avatar shape="square" :size="100" fit="cover" :src="UserInfo.HeadImage"></el-avatar>
           <div id="UserPage_Name">{{UserInfo.UserName}}</div>
        </div>
        <div id="UserPage_Body">
@@ -57,6 +57,7 @@ text-decoration: none;
 <script>
 import GetSmg from "../../../GetInterface"
 import PostSmg from "../../../PostInterface"
+import { async } from 'q';
 export default {
    data(){
      return {
@@ -87,27 +88,52 @@ export default {
                        }
             })      
                  this.$router.push('/MainPage')
+          },
+          flash:async function(){
+         if (this.$route.query.UserName==this.$store.state.UserName){
+          this.$router.replace("/MainPage/My")
+       }
+    await  GetSmg.GetUserInfo(this.$route.query.UserName).then(result=>{
+            this.UserInfo=result.data;
+            // alert("回调函数");
+      })
+     await  GetSmg.GetIfFriend(this.$store.state.UserName,this.$route.query.UserName).then(result=>{
+      this.UserInfo.FriendFlag=result.data.Flag;
+       if (result.data.Flag==1){
+            this.flag=0;
+          }else{
+            this.flag=1;
           }
-         
-
+      })
+    }
    },
    sockets:{
           //  AddFriendSocket:function(OtherUserName){
           //      this.$socket.emit("AddFriend",OtherUserName);
           //  }
    },
-             created() {
-            GetSmg.GetUserInfo(this.$route.query.UserName).then(result=>{
-                   this.UserInfo=result.data;
-            })
-            GetSmg.GetIfFriend(this.$store.state.UserName,this.$route.query.UserName).then(result=>{
-                    this.UserInfo.FriendFlag=result.data.Flag;
-                    if (result.data.Flag==1){
-                          this.flag=0;
-                    }else{
-                      this.flag=1;
-                    }
+    created() {
+       if (this.$route.query.UserName==this.$store.state.UserName){
+          this.$router.replace("/MainPage/My")
+       }
+      GetSmg.GetUserInfo(this.$route.query.UserName).then(result=>{
+            this.UserInfo=result.data;
+      })
+      GetSmg.GetIfFriend(this.$store.state.UserName,this.$route.query.UserName).then(result=>{
+      this.UserInfo.FriendFlag=result.data.Flag;
+       if (result.data.Flag==1){
+            this.flag=0;
+          }else{
+            this.flag=1;
+          }
             })
           },
+      watch:{
+        '$route'(to,from){
+          // alert("刷新");
+           this.flash();
+        }
+      }
+      
 }
 </script>

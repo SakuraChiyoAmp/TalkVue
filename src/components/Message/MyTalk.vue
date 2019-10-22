@@ -6,13 +6,17 @@
       </div>
        <div id="pup"></div>
       <div id="OtherTalk_Left">
+        <router-link to="/MainPage/My">
           <el-avatar style="margin-top:0.2rem" shape="circle" size="100" fit="fit" :src='this.User.HeadImage'></el-avatar>
+        </router-link>
       </div>
     </div>
 
     <div  v-if="!this.flag" class="Con">
        <div id="OtherTalk_LeftR">
-          <el-avatar style="margin-top:0.2rem" shape="circle" size="100" fit="fit" :src='this.OtherUser.HeadImage'></el-avatar>
+          <router-link :to="{name:'UserPage',query:{UserName:this.$route.query.OtherUserName}}">
+             <el-avatar style="margin-top:0.2rem" shape="circle" size="100" fit="fit" :src='this.OtherUser.HeadImage'></el-avatar>
+          </router-link>
       </div>
       <div id="pupR"></div>
       <div id="OtherTalk_RightR">
@@ -101,7 +105,7 @@ export default {
       GetMsg.GetUserInfo(this.e.UserName).then(result=>{
         this.User=result.data;
      })
-      GetMsg.GetUserInfo(this.e.OtherUserName).then(result=>{
+      GetMsg.GetUserInfo(this.$route.query.OtherUserName).then(result=>{
        this.OtherUser=result.data;
      })
   },

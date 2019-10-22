@@ -87,7 +87,7 @@ import GetMsg from "../../../GetInterface"
        this.Initial();
        this.$router.push('/MainPage')
         } else {
-            console.log('error submit!!');
+            alert("密码错误");
             return false;
           }
         });
